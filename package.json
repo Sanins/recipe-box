@@ -5,9 +5,11 @@
   "dependencies": {
     "@types/jest": "24.0.12",
     "@types/node": "12.0.0",
-    "@types/react": "16.8.17",
+    "@types/react-bootstrap": "^0.32.17",
     "@types/react-dom": "16.8.4",
+    "node-sass": "^4.12.0",
     "react": "^16.8.6",
+    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "typescript": "3.4.5"
@@ -32,5 +34,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.17",
+    "gh-pages": "^2.0.1"
   }
 }
