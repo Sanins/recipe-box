@@ -35,9 +35,18 @@ export class Recipe extends React.Component<any, RecipeState> {
 
   componentDidMount() {//load the local storage data after the component renders
     var recipes = (typeof localStorage["recipes"] !== "undefined") ? JSON.parse(localStorage.getItem('recipes') || '{}') : [
-      {name: "Banana Smoothie", ingredients: ["2 bananas", "1/2 cup vanilla yogurt", "1/2 cup skim milk", "2 teaspoons honey", "pinch of cinnamon"]},
-      {name: "Spaghetti", ingredients: ["Noodles", "Tomato Sauce", "Meatballs"]},
-      {name: "Split Pea Soup", ingredients: ["1 pound split peas", "1 onion", "6 carrots", "4 ounces of ham"]}
+      {
+        name: "Banana Smoothie", 
+        ingredients: ["2 bananas", "1/2 cup vanilla yogurt", "1/2 cup skim milk", "2 teaspoons honey", "pinch of cinnamon"]
+      },
+      {
+        name: "Spaghetti",
+        ingredients: ["Noodles", "Tomato Sauce", "Meatballs"]
+      },
+      {
+        name: "Split Pea Soup", 
+        ingredients: ["1 pound split peas", "1 onion", "6 carrots", "4 ounces of ham"]
+      }
     ];
     this.setState({recipes: recipes});
   }
@@ -87,6 +96,11 @@ export class Recipe extends React.Component<any, RecipeState> {
                 </div>
                 <div>
                   <div>
+                    <h2>Ingredients</h2>
+                    {recipe.ingredients.map((ingredient, index) => (
+                      <div key={index}>{ingredient}</div>
+                    ))}
+                    <h2>Recipe</h2>
                     {recipe.ingredients.map((ingredient, index) => (
                       <div key={index}>{ingredient}</div>
                     ))}
@@ -96,14 +110,22 @@ export class Recipe extends React.Component<any, RecipeState> {
                     <button onClick={() => {this.deleteRecipe(index)}}>Delete</button>
                   </div>
                 </div>
-                <EditRecipe onShow={this.state.showEdit} onEdit={this.editRecipe} onEditModal={() => {this.showEditModal(currentlyEditing)}} currentlyEditing={currentlyEditing} recipe={recipes[currentlyEditing]} />
+                <EditRecipe 
+                  onShow={this.state.showEdit} 
+                  onEdit={this.editRecipe} 
+                  onEditModal={() => {this.showEditModal(currentlyEditing)}} 
+                  currentlyEditing={currentlyEditing} 
+                  recipe={recipes[currentlyEditing]} 
+                />
               </div>
             ))}
           </div>
-        
         <button onClick={this.showAddModal}>Add Recipe</button>
-        <AddRecipe onShow={this.state.showAdd} onAdd={this.addRecipe} onAddModal={this.showAddModal} />
-        
+        <AddRecipe 
+          onShow={this.state.showAdd} 
+          onAdd={this.addRecipe} 
+          onAddModal={this.showAddModal} 
+        />
       </div>
     );
   };
