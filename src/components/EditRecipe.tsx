@@ -1,6 +1,6 @@
 //import the necessary files
 import React from 'react';
-import {Modal,ControlLabel,FormGroup,FormControl,Button} from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 
 interface EditRecipeProps {
     onEdit: any;
@@ -10,21 +10,24 @@ interface EditRecipeProps {
     recipe: {
         name: string;
         ingredients: any;
+        instructions: any;
     }
   }
   
   interface EditRecipeState {
     name: string;
     ingredients: string;
+    instructions: string;
   }
 
 //create a class for displaying the modal for editing an existing recipe and export it
 export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState> {
   constructor(props:any) {//create a state to handle the recipe to be edited
     super(props);
-    this.state = {name: "", ingredients: ""};
+    this.state = {name: "", ingredients: "", instructions: ""};
     this.handleRecipeNameChange = this.handleRecipeNameChange.bind(this);
     this.handleRecipeIngredientsChange = this.handleRecipeIngredientsChange.bind(this);
+    this.handleRecipeInstructionsChange = this.handleRecipeInstructionsChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -32,12 +35,14 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
   static getDerivedStateFromProps(props:any, state:any) {//make the recipe prop a state
     const prevName = state.prevName;
     const prevIngredients = state.prevIngredients;
+    const prevInstructions = state.prevInstructions;
     const name = prevName !== props.recipe.name ? props.recipe.name : state.name;
     const ingredients = prevIngredients !== props.recipe.ingredients.join(",") ? props.recipe.ingredients.join(",") : state.ingredients;
-
+    const instructions = prevInstructions !== props.recipe.instructions.join(",") ? props.recipe.instructions.join(",") : state.instructions;
     return {
       prevName: props.recipe.name, name,
       prevIngredients: props.recipe.ingredients.join(","), ingredients,
+      prevInstructions: props.recipe.ingredients.join(","), instructions
     }
   }
 
@@ -49,6 +54,10 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     this.setState({ingredients: e.target.value});
   }
 
+  handleRecipeInstructionsChange(e:any) {//change the ingredients to reflect user input
+    this.setState({instructions: e.target.value});
+  }
+
   handleEdit(e:any) {//get the recipe data, manipulate it and call the function for editing an existing recipe
     e.preventDefault();
     const onEdit = this.props.onEdit;
@@ -56,12 +65,13 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     const regExp = /\s*,\s*/;
     var name = this.state.name;
     var ingredients = this.state.ingredients.split(regExp);
-    onEdit(name, ingredients, currentlyEditing);
+    var instructions = this.state.instructions.split(regExp);
+    onEdit(name, ingredients, instructions, currentlyEditing);
   }
 
   handleCancel() {
     const onEditModal = this.props.onEditModal;
-    this.setState({name: this.props.recipe.name, ingredients: this.props.recipe.ingredients.join(",")});
+    this.setState({name: this.props.recipe.name, ingredients: this.props.recipe.ingredients.join(","), instructions: this.props.recipe.instructions.join(",")});
     onEditModal();
   }
 
@@ -70,25 +80,29 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     var regex1 = /^\S/;
     var regex2 = /^[^,\s]/;
     var regex3 = /[^,\s]$/;
-    const validRecipe = regex1.test(this.state.name) && regex2.test(this.state.ingredients) && regex3.test(this.state.ingredients);
+    const validRecipe = regex1.test(this.state.name) && regex2.test(this.state.ingredients) && regex3.test(this.state.ingredients) && regex2.test(this.state.instructions) && regex3.test(this.state.instructions);;
 
     return(
-      <Modal show={onShow} onHide={this.handleCancel}>
+      <Modal centered size="lg" show={onShow} onHide={this.handleCancel}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Recipe</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormGroup controlId="formControlsName">
-            <ControlLabel>Recipe Name</ControlLabel>
-            <FormControl type="text" required onChange={this.handleRecipeNameChange} value={this.state.name} placeholder="Enter Name" />
-          </FormGroup>
-          <FormGroup controlId="formControlsIngredients">
-            <ControlLabel>Recipe Ingredients</ControlLabel>
-            <FormControl componentClass="textarea" type="text" required onChange={this.handleRecipeIngredientsChange} value={this.state.ingredients} placeholder="Enter Ingredients(separate by commas)" />
-          </FormGroup>
+          <Form.Group controlId="formControlsName">
+            <Form.Label>Recipe Name</Form.Label>
+            <Form.Control type="text" required onChange={this.handleRecipeNameChange} value={this.state.name} placeholder="Enter Name" />
+          </Form.Group>
+          <Form.Group controlId="formControlsIngredients">
+            <Form.Label>Recipe Ingredients</Form.Label>
+            <Form.Control as="textarea" type="text" required onChange={this.handleRecipeIngredientsChange} value={this.state.ingredients} placeholder="Enter Ingredients(separate by commas)" />
+          </Form.Group>
+          <Form.Group controlId="formControlsInstructions">
+            <Form.Label>Recipe Instructions</Form.Label>
+            <Form.Control as="textarea" type="text" required onChange={this.handleRecipeInstructionsChange} value={this.state.instructions} placeholder="Enter Instructions(separate by commas)" />
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button disabled={!validRecipe} bsStyle="success" onClick={this.handleEdit}>Save Recipe</Button>
+          <Button disabled={!validRecipe} variant="success" onClick={this.handleEdit}>Save Recipe</Button>
         </Modal.Footer>
       </Modal>
     );
