@@ -1,14 +1,18 @@
-h1, li, .title {
-    font-family: 'Mina';
+body {
+    background-color: #E0F2FF;
 }
-h1, li {
-    text-align: center;
-}
+
 .title {
-    background-color: #D8BFD8;
-    font-size: 20px;
+    background-color: #cecece;
+    font-size: 36px;
+    margin-bottom: 20px;
 }
+
 li {
     list-style-type: none;
     font-size: 18px;
+}
+
+.button__right-margin {
+    margin-right: 10px;
 }

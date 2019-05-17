@@ -12,14 +12,15 @@ interface AddRecipeState {
   name: string;
   ingredients: string;
   instructions: string;
-  // difficulty: string
+  difficulty: string;
 }
 
 export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
   constructor(props:any) {
     super(props);
-    this.state = {name: "", ingredients: "", instructions: ""};
+    this.state = {name: "", ingredients: "", instructions: "", difficulty: 'Choose'};
 
+    this.handleRecipeDifficultyChange = this.handleRecipeDifficultyChange.bind(this);
     this.handleRecipeInstructionsChange = this.handleRecipeInstructionsChange.bind(this);
     this.handleRecipeNameChange = this.handleRecipeNameChange.bind(this);
     this.handleRecipeIngredientsChange = this.handleRecipeIngredientsChange.bind(this);
@@ -29,6 +30,10 @@ export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
 
   handleRecipeNameChange(e: any) {
     this.setState({name: e.target.value});
+  }
+
+  handleRecipeDifficultyChange(e: any) {
+    this.setState({difficulty: e.target.value});
   }
 
   handleRecipeIngredientsChange(e: any) {
@@ -43,17 +48,18 @@ export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
     e.preventDefault();
     const onAdd = this.props.onAdd;
     const regExp = /\s*,\s*/;
+    var newDifficulty = this.state.difficulty;
     var newName = this.state.name;
     var newIngredients = this.state.ingredients.split(regExp);
     var newItemInstructions = this.state.instructions.split(regExp);
-    var newRecipe = {name: newName, ingredients: newIngredients, instructions: newItemInstructions};
+    var newRecipe = {name: newName, difficulty: newDifficulty, ingredients: newIngredients, instructions: newItemInstructions};
     onAdd(newRecipe);
-    this.setState({name: "", ingredients: "", instructions: ""});
+    this.setState({name: "", ingredients: "", instructions: "", difficulty: ""});
   }
 
   handleCancel() {
     const onAddModal = this.props.onAddModal;
-    this.setState({name: "", ingredients: "", instructions: ""});
+    this.setState({name: "", ingredients: "", instructions: "", difficulty: ""});
     onAddModal();
   }
   
@@ -73,6 +79,15 @@ export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
           <Form.Group controlId="formControlsName">
             <Form.Label>Recipe Name</Form.Label>
             <Form.Control type="text" required onChange={this.handleRecipeNameChange} value={this.state.name} placeholder="Enter Name" />
+          </Form.Group>
+          <Form.Group controlId="formControlsDifficulty">
+            <Form.Label>Difficulty</Form.Label>
+            <Form.Control as="select" type="text" required onChange={this.handleRecipeDifficultyChange} value={this.state.difficulty}>
+              <option value="" disabled selected>Select your option</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </Form.Control>
           </Form.Group>
           <Form.Group controlId="formControlsIngredients">
             <Form.Label>Recipe Ingredients</Form.Label>

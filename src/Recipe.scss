@@ -1,3 +1,24 @@
-.recipe__numeric-list {
-    list-style-type: decimal;
+.recipes {
+    background-color: #FFF;
+    margin-top: 20px;
+
+    &__add-recipe {
+        background-color: #FFF;
+    }
+}
+
+.recipe {
+    margin-bottom: 20px;
+
+    &__subheading {
+        font-size: 1.4rem;
+    }
+
+    &__list {
+        padding: 0;
+    }
+
+    &__add-recipe--btn {
+        margin-top: 4px;
+    }
 }

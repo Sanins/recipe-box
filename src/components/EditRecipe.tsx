@@ -9,6 +9,7 @@ interface EditRecipeProps {
     onShow: any;
     recipe: {
         name: string;
+        difficulty: string;
         ingredients: any;
         instructions: any;
     }
@@ -16,6 +17,7 @@ interface EditRecipeProps {
   
   interface EditRecipeState {
     name: string;
+    difficulty: string;
     ingredients: string;
     instructions: string;
   }
@@ -24,7 +26,8 @@ interface EditRecipeProps {
 export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState> {
   constructor(props:any) {//create a state to handle the recipe to be edited
     super(props);
-    this.state = {name: "", ingredients: "", instructions: ""};
+    this.state = {name: "", difficulty: "", ingredients: "", instructions: ""};
+    this.handleRecipeDifficultyChange = this.handleRecipeDifficultyChange.bind(this);
     this.handleRecipeNameChange = this.handleRecipeNameChange.bind(this);
     this.handleRecipeIngredientsChange = this.handleRecipeIngredientsChange.bind(this);
     this.handleRecipeInstructionsChange = this.handleRecipeInstructionsChange.bind(this);
@@ -33,6 +36,7 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
   }
 
   static getDerivedStateFromProps(props:any, state:any) {//make the recipe prop a state
+    const prevDifficulty = state.difficulty;
     const prevName = state.prevName;
     const prevIngredients = state.prevIngredients;
     const prevInstructions = state.prevInstructions;
@@ -40,10 +44,15 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     const ingredients = prevIngredients !== props.recipe.ingredients.join(",") ? props.recipe.ingredients.join(",") : state.ingredients;
     const instructions = prevInstructions !== props.recipe.instructions.join(",") ? props.recipe.instructions.join(",") : state.instructions;
     return {
+      prevDifficulty: props.recipe.difficulty,
       prevName: props.recipe.name, name,
       prevIngredients: props.recipe.ingredients.join(","), ingredients,
       prevInstructions: props.recipe.ingredients.join(","), instructions
     }
+  }
+
+  handleRecipeDifficultyChange(e: any) {
+    this.setState({difficulty: e.target.value});
   }
 
   handleRecipeNameChange(e:any) {//change the name to reflect user input
@@ -64,9 +73,10 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     const currentlyEditing = this.props.currentlyEditing;
     const regExp = /\s*,\s*/;
     var name = this.state.name;
+    var difficulty = this.state.difficulty;
     var ingredients = this.state.ingredients.split(regExp);
     var instructions = this.state.instructions.split(regExp);
-    onEdit(name, ingredients, instructions, currentlyEditing);
+    onEdit(name, difficulty, ingredients, instructions, currentlyEditing);
   }
 
   handleCancel() {
@@ -91,6 +101,15 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
           <Form.Group controlId="formControlsName">
             <Form.Label>Recipe Name</Form.Label>
             <Form.Control type="text" required onChange={this.handleRecipeNameChange} value={this.state.name} placeholder="Enter Name" />
+          </Form.Group>
+          <Form.Group controlId="formControlsDifficulty">
+            <Form.Label>Difficulty</Form.Label>
+            <Form.Control as="select" type="text" required onChange={this.handleRecipeDifficultyChange} value={this.state.difficulty}>
+              <option value="" disabled selected>Select your option</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </Form.Control>
           </Form.Group>
           <Form.Group controlId="formControlsIngredients">
             <Form.Label>Recipe Ingredients</Form.Label>

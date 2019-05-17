@@ -2,9 +2,11 @@ import './Recipe.scss';
 import React from 'react';
 import { AddRecipe } from './components/AddRecipe';
 import { EditRecipe } from './components/EditRecipe';
+import { Container, Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 
 interface RecipeState {
 	recipes: [{
+    difficulty: string;
     name: string;
     ingredients: string[];
     instructions: string[];
@@ -19,6 +21,7 @@ export class Recipe extends React.Component<any, RecipeState> {
 		super(props);
 		this.state = {
 			recipes: [{
+        difficulty: '',
         name: '',
         ingredients: [''],
         instructions: [''],
@@ -39,16 +42,19 @@ export class Recipe extends React.Component<any, RecipeState> {
     var recipes = (typeof localStorage["recipes"] !== "undefined") ? JSON.parse(localStorage.getItem('recipes') || '{}') : [
       {
         name: "Banana Smoothie", 
+        difficulty: "Easy",
         ingredients: ["2 bananas", "1/2 cup vanilla yogurt", "1/2 cup skim milk", "2 teaspoons honey", "pinch of cinnamon"],
         instructions: ["put in oven", "do a star jump", "dab"]
       },
       {
         name: "Spaghetti",
+        difficulty: "Easy",
         ingredients: ["Noodles", "Tomato Sauce", "Meatballs"],
         instructions: ["put in oven", "do a star jump", "dab"]
       },
       {
         name: "Split Pea Soup", 
+        difficulty: "Medium",
         ingredients: ["1 pound split peas", "1 onion", "6 carrots", "4 ounces of ham"],
         instructions: ["put in oven", "do a star jump", "dab"]
       }
@@ -64,7 +70,7 @@ export class Recipe extends React.Component<any, RecipeState> {
     this.setState({showEdit: !this.state.showEdit, currentlyEditing: index});
   }
 
-  addRecipe(recipe: {name: string; ingredients: string[]; instructions:string[]}) {
+  addRecipe(recipe: {name: string; difficulty:string; ingredients: string[]; instructions:string[]}) {
     let recipes = this.state.recipes;
     recipes.push(recipe);
     localStorage.setItem('recipes', JSON.stringify(recipes));
@@ -72,9 +78,9 @@ export class Recipe extends React.Component<any, RecipeState> {
     this.showAddModal();
   }
 
-  editRecipe(newName: string, newIngredients: string[], newInstructions: string[], currentlyEditing: number) {
+  editRecipe(newName: string, newDifficulty:string, newIngredients: string[], newInstructions: string[], currentlyEditing: number) {
     let recipes = this.state.recipes;
-    recipes[currentlyEditing] = {name: newName, ingredients: newIngredients, instructions: newInstructions};
+    recipes[currentlyEditing] = {name: newName, difficulty: newDifficulty, ingredients: newIngredients, instructions: newInstructions};
     localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes});
     this.showEditModal(currentlyEditing);
@@ -91,51 +97,69 @@ export class Recipe extends React.Component<any, RecipeState> {
     const recipes = this.state.recipes;
     var currentlyEditing = this.state.currentlyEditing;
     return (
-      <div className="">
-        <h1>RECIPE BOX</h1>
-          <div id="recipes">
-            {this.state.recipes.map((recipe, index) => (
-              <div key={index}>
-                <div>
-                  <div className="title">{recipe.name}</div>
-                </div>
-                <div>
-                  <div>
-                    <h2>Ingredients</h2>
-                    {recipe.ingredients.map((ingredient, index) => (
-                      <div key={index}>{ingredient}</div>
-                    ))}
-                  </div>
-                  <div>
-                    <h2>Instructions</h2>
-                    <ul className="recipe">
-                      {recipe.instructions.map((instruction, index) => (
-                        <li className="recipe__numeric-list" key={index}>{instruction}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <button onClick={() => {this.showEditModal(index)}}>Edit</button>
-                    <button onClick={() => {this.deleteRecipe(index)}}>Delete</button>
-                  </div>
-                </div>
-                <EditRecipe 
-                  onShow={this.state.showEdit} 
-                  onEdit={this.editRecipe} 
-                  onEditModal={() => {this.showEditModal(currentlyEditing)}} 
-                  currentlyEditing={currentlyEditing} 
-                  recipe={recipes[currentlyEditing]} 
-                />
-              </div>
-            ))}
-          </div>
-        <button onClick={this.showAddModal}>Add Recipe</button>
-        <AddRecipe 
-          onShow={this.state.showAdd} 
-          onAdd={this.addRecipe} 
-          onAddModal={this.showAddModal} 
-        />
-      </div>
+      <Container className='recipes' >
+        <Row className="justify-content-md-center">
+          <Col md="auto">
+            <h1>RECIPE BOX</h1>
+          </Col>
+          <Col md="auto">
+            <Button className="recipe__add-recipe--btn" variant="primary" onClick={this.showAddModal}>Add Recipe</Button>
+          </Col>
+            <Container id="recipes">
+              {this.state.recipes.map((recipe, index) => (
+                <Row className="recipe" key={index}>
+                  <Col className="title">{recipe.name}</Col>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <h2 className='recipe__subheading'>Difficulty</h2>
+                          <p>{recipe.difficulty}</p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col xs={6} md={4}>
+                          <h2 className='recipe__subheading'>Ingredients</h2>
+                          <ul className="recipe__list">
+                            {recipe.ingredients.map((ingredient, index) => (
+                              <li key={index}>{ingredient}</li>
+                            ))}
+                          </ul>
+                        </Col>
+                        <Col xs={12} md={8}>
+                          <h2 className='recipe__subheading'>Instructions</h2>
+                          <ul className="recipe__list">
+                            {recipe.instructions.map((instruction, index) => (
+                              <li className="recipe__numeric-list" key={index}>{index +1} . {instruction}</li>
+                            ))}
+                          </ul>
+                        </Col>
+                      </Row>
+                      <Row className='recipes__edit-delete-btns'>
+                        <Col>
+                          <ButtonToolbar>
+                            <Button className="button__right-margin" variant="info" onClick={() => {this.showEditModal(index)}}>Edit</Button>
+                            <Button variant="danger" onClick={() => {this.deleteRecipe(index)}}>Delete</Button>
+                          </ButtonToolbar>
+                        </Col>
+                      </Row>
+                    </Container>
+                    <EditRecipe 
+                      onShow={this.state.showEdit} 
+                      onEdit={this.editRecipe} 
+                      onEditModal={() => {this.showEditModal(currentlyEditing)}} 
+                      currentlyEditing={currentlyEditing} 
+                      recipe={recipes[currentlyEditing]} 
+                    />
+                  </Row>
+                ))}
+              </Container>
+            <AddRecipe 
+              onShow={this.state.showAdd} 
+              onAdd={this.addRecipe} 
+              onAddModal={this.showAddModal} 
+            />
+        </Row>
+      </Container>
     );
   };
 }
