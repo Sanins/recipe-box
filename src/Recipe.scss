@@ -1,6 +1,7 @@
 .recipes {
     background-color: #FFF;
     margin-top: 20px;
+    border-radius: 10px;
 
     &__add-recipe {
         background-color: #FFF;
@@ -11,11 +12,16 @@
     margin-bottom: 20px;
 
     &__subheading {
-        font-size: 1.4rem;
+        font-size: 1.4rem; 
     }
 
     &__list {
         padding: 0;
+
+        &__ingredients:nth-child(even) {
+            background: #f1f1f1;
+        }
+        
     }
 
     &__add-recipe--btn {

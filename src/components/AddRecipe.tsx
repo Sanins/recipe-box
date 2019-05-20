@@ -1,6 +1,7 @@
 //import the necessary files
 import React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { recipeState } from '../../types/types';
 
 interface AddRecipeProps {
   onAdd: any;
@@ -8,17 +9,10 @@ interface AddRecipeProps {
   onShow: boolean;
 }
 
-interface AddRecipeState {
-  name: string;
-  ingredients: string;
-  instructions: string;
-  difficulty: string;
-}
-
-export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
+export class AddRecipe extends React.Component<AddRecipeProps, recipeState> {
   constructor(props:any) {
     super(props);
-    this.state = {name: "", ingredients: "", instructions: "", difficulty: 'Choose'};
+    this.state = {name: "", ingredients: "", instructions: "", difficulty: ''};
 
     this.handleRecipeDifficultyChange = this.handleRecipeDifficultyChange.bind(this);
     this.handleRecipeInstructionsChange = this.handleRecipeInstructionsChange.bind(this);
@@ -26,10 +20,6 @@ export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
     this.handleRecipeIngredientsChange = this.handleRecipeIngredientsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-  }
-
-  handleRecipeNameChange(e: any) {
-    this.setState({name: e.target.value});
   }
 
   handleRecipeDifficultyChange(e: any) {
@@ -42,6 +32,10 @@ export class AddRecipe extends React.Component<AddRecipeProps ,AddRecipeState> {
 
   handleRecipeInstructionsChange(e: any) {
     this.setState({instructions: e.target.value});
+  }
+
+  handleRecipeNameChange(e: any) {
+    this.setState({name: e.target.value});
   }
 
   handleSubmit(e: (any)) {

@@ -3,14 +3,10 @@ import React from 'react';
 import { AddRecipe } from './components/AddRecipe';
 import { EditRecipe } from './components/EditRecipe';
 import { Container, Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
+import { recipe } from './../types/types'
 
 interface RecipeState {
-	recipes: [{
-    difficulty: string;
-    name: string;
-    ingredients: string[];
-    instructions: string[];
-  }];
+	recipes: recipe[];
   showAdd: boolean;
   showEdit: boolean;
   currentlyEditing: number;
@@ -96,6 +92,7 @@ export class Recipe extends React.Component<any, RecipeState> {
   public render() {
     const recipes = this.state.recipes;
     var currentlyEditing = this.state.currentlyEditing;
+
     return (
       <Container className='recipes' >
         <Row className="justify-content-md-center">
@@ -121,7 +118,7 @@ export class Recipe extends React.Component<any, RecipeState> {
                           <h2 className='recipe__subheading'>Ingredients</h2>
                           <ul className="recipe__list">
                             {recipe.ingredients.map((ingredient, index) => (
-                              <li key={index}>{ingredient}</li>
+                              <li className="recipe__list__ingredients" key={index}>{ingredient}</li>
                             ))}
                           </ul>
                         </Col>
@@ -129,7 +126,7 @@ export class Recipe extends React.Component<any, RecipeState> {
                           <h2 className='recipe__subheading'>Instructions</h2>
                           <ul className="recipe__list">
                             {recipe.instructions.map((instruction, index) => (
-                              <li className="recipe__numeric-list" key={index}>{index +1} . {instruction}</li>
+                              <li className="recipe__numeric-list" key={index}>{index +1}. {instruction}</li>
                             ))}
                           </ul>
                         </Col>

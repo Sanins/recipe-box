@@ -1,29 +1,18 @@
 //import the necessary files
 import React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { recipe, recipeState } from '../../types/types';
 
 interface EditRecipeProps {
-    onEdit: any;
-    currentlyEditing: any;
-    onEditModal: any;
-    onShow: any;
-    recipe: {
-        name: string;
-        difficulty: string;
-        ingredients: any;
-        instructions: any;
-    }
-  }
-  
-  interface EditRecipeState {
-    name: string;
-    difficulty: string;
-    ingredients: string;
-    instructions: string;
-  }
+  onEdit: any;
+  currentlyEditing: any;
+  onEditModal: any;
+  onShow: any;
+  recipe: recipe;
+}
 
 //create a class for displaying the modal for editing an existing recipe and export it
-export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState> {
+export class EditRecipe extends React.Component<EditRecipeProps, recipeState> {
   constructor(props:any) {//create a state to handle the recipe to be edited
     super(props);
     this.state = {name: "", difficulty: "", ingredients: "", instructions: ""};
@@ -36,7 +25,6 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
   }
 
   static getDerivedStateFromProps(props:any, state:any) {//make the recipe prop a state
-    const prevDifficulty = state.difficulty;
     const prevName = state.prevName;
     const prevIngredients = state.prevIngredients;
     const prevInstructions = state.prevInstructions;
@@ -55,16 +43,16 @@ export class EditRecipe extends React.Component<EditRecipeProps, EditRecipeState
     this.setState({difficulty: e.target.value});
   }
 
-  handleRecipeNameChange(e:any) {//change the name to reflect user input
-    this.setState({name: e.target.value});
-  }
-
   handleRecipeIngredientsChange(e:any) {//change the ingredients to reflect user input
     this.setState({ingredients: e.target.value});
   }
 
   handleRecipeInstructionsChange(e:any) {//change the ingredients to reflect user input
     this.setState({instructions: e.target.value});
+  }
+
+  handleRecipeNameChange(e:any) {//change the name to reflect user input
+    this.setState({name: e.target.value});
   }
 
   handleEdit(e:any) {//get the recipe data, manipulate it and call the function for editing an existing recipe
