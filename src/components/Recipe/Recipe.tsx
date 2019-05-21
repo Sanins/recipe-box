@@ -1,9 +1,9 @@
 import './Recipe.scss';
 import React from 'react';
-import { AddRecipe } from './components/AddRecipe';
-import { EditRecipe } from './components/EditRecipe';
+import { AddRecipe } from '../AddRecipe/AddRecipe';
+import { EditRecipe } from '../EditRecipe/EditRecipe';
 import { Container, Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
-import { recipe } from './../types/types'
+import { recipe } from './../../../types/types'
 
 interface RecipeState {
 	recipes: recipe[];

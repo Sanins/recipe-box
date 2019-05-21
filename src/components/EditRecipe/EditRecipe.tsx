@@ -1,7 +1,7 @@
 //import the necessary files
 import React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { recipe, recipeState } from '../../types/types';
+import { recipe, recipeState } from '../../../types/types';
 
 interface EditRecipeProps {
   onEdit: any;
