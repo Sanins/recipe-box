@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { recipeState } from '../../../types/types';
+import firebase from 'firebase';
 
 interface AddRecipeProps {
   onAdd: any;
@@ -40,6 +41,7 @@ export class AddRecipe extends React.Component<AddRecipeProps, recipeState> {
 
   handleSubmit(e: (any)) {
     e.preventDefault();
+    const recipesRef = firebase.database().ref('recipes');
     const onAdd = this.props.onAdd;
     const regExp = /\s*,\s*/;
     var newDifficulty = this.state.difficulty;
@@ -48,6 +50,13 @@ export class AddRecipe extends React.Component<AddRecipeProps, recipeState> {
     var newItemInstructions = this.state.instructions.split(regExp);
     var newRecipe = {name: newName, difficulty: newDifficulty, ingredients: newIngredients, instructions: newItemInstructions};
     onAdd(newRecipe);
+    const recipe = {
+      name: this.state.name,
+      ingredients: this.state.name,
+      instructions: this.state.instructions,
+      difficulty: this.state.difficulty,
+    }
+    recipesRef.push(recipe);
     this.setState({name: "", ingredients: "", instructions: "", difficulty: ""});
   }
 
