@@ -1,8 +1,9 @@
 import * as React from "react";
 import { auth } from "../firebase";
+import { Button } from "react-bootstrap";
 
 export const SignOutButton = () => (
-  <button type="button" onClick={auth.doSignOut}>
+  <Button type="button" onClick={auth.doSignOut}>
     Sign Out
-  </button>
+  </Button>
 );

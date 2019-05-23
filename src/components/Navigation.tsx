@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import * as routes from "../constants/routes";
 import { AuthUserContext } from "../firebase/AuthUserContext";
 import { SignOutButton } from "./SignOutButton";
+import { Navbar, Nav } from "react-bootstrap";
 
 export const Navigation = () => (
   <AuthUserContext.Consumer>
@@ -11,29 +12,42 @@ export const Navigation = () => (
 );
 
 const NavigationAuth = () => (
-  <ul>
-    <li>
-      <Link to={routes.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={routes.HOME}>Home</Link>
-    </li>
-    <li>
-      <Link to={routes.ACCOUNT}>Account</Link>
-    </li>
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+  <Navbar bg="light" expand="lg">
+    <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto">
+        <Nav.Link>
+          <Link to={routes.LANDING}>Landing</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <Link to={routes.HOME}>Home</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <Link to={routes.ACCOUNT}>Account</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <SignOutButton />
+        </Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 );
 
 const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={routes.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={routes.SIGN_IN}>Sign In</Link>
-    </li>
-  </ul>
+  <Navbar bg="light" expand="lg">
+    <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto">
+        <Nav.Link>
+          <Link to={routes.LANDING}>Landing</Link>
+        </Nav.Link>
+        <Nav.Link>
+          <Link to={routes.SIGN_IN}>Sign In</Link>
+        </Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 );
+

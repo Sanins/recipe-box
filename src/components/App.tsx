@@ -10,6 +10,7 @@ import { PasswordForget } from "../pages/PasswordForget";
 import { SignIn } from "../pages/SignIn";
 import { SignUp } from "../pages/SignUp";
 import { Navigation } from "./Navigation";
+import "./App.scss";
 
 class AppComponent extends React.Component {
   constructor(props: any) {
@@ -33,19 +34,16 @@ class AppComponent extends React.Component {
       <BrowserRouter>
         <div>
           <Navigation />
-          <hr />
-          <Switch>
-            <Route exact={true} path={routes.LANDING} component={Landing} />
-            <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
-            <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
-            <Route
-              exact={true}
-              path={routes.PASSWORD_FORGET}
-              component={PasswordForget}
-            />
-            <Route exact={true} path={routes.HOME} component={Home} />
-            <Route exact={true} path={routes.ACCOUNT} component={Account} />
-          </Switch>
+            <div className="app">
+              <Switch>
+                <Route exact={true} path={routes.LANDING} component={Landing} />
+                <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
+                <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
+                <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget} />
+                <Route exact={true} path={routes.HOME} component={Home} />
+                <Route exact={true} path={routes.ACCOUNT} component={Account} />
+              </Switch>
+            </div>
         </div>
       </BrowserRouter>
     );

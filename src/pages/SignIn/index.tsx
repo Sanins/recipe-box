@@ -6,7 +6,7 @@ import { SignInForm } from "./SignInForm";
 
 const SignInComponent = ({ history }: { [key: string]: any }) => (
   <div>
-    <h1>SignIn</h1>
+    <h1>Sign In</h1>
     <SignInForm history={history} />
     <SignUpLink />
     <PasswordForgetLink />

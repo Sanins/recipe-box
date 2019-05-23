@@ -9,8 +9,14 @@ export const AccountComponent = () => (
     {authUser => (
       <div>
         <h1>Account: {(authUser as any).email}</h1>
-        <PasswordForgetForm />
-        <PasswordChangeForm />
+        <div>
+          <h2>Forgotten Password</h2>
+          <PasswordForgetForm />
+        </div>
+        <div>
+          <h2>Reset Password</h2>
+          <PasswordChangeForm />
+        </div>
       </div>
     )}
   </AuthUserContext.Consumer>

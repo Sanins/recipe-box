@@ -1,5 +1,6 @@
 import * as React from "react";
 import { auth } from "../../firebase";
+import { Form, Button } from "react-bootstrap";
 
 interface InterfaceProps {
   error?: any;
@@ -54,25 +55,29 @@ export class PasswordChangeForm extends React.Component<
     const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 
     return (
-      <form onSubmit={event => this.onSubmit(event)}>
-        <input
-          value={passwordOne}
-          onChange={event => this.setStateWithEvent(event, "passwordOne")}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          value={passwordTwo}
-          onChange={event => this.setStateWithEvent(event, "passwordTwo")}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
+      <Form onSubmit={(event:any) => this.onSubmit(event)}>
+        <Form.Group controlId="accountNewPassword">
+          <Form.Control
+            value={passwordOne}
+            onChange={(event:any) => this.setStateWithEvent(event, "passwordOne")}
+            type="password"
+            placeholder="New Password"
+          />
+        </Form.Group>
+        <Form.Group controlId="accountConfirmNewPassword">
+          <Form.Control
+            value={passwordTwo}
+            onChange={(event:any) => this.setStateWithEvent(event, "passwordTwo")}
+            type="password"
+            placeholder="Confirm New Password"
+          />
+        </Form.Group>
+        <Button disabled={isInvalid} type="submit">
           Reset My Password
-        </button>
+        </Button>
 
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 

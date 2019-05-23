@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as routes from "../../constants/routes";
+import { Button, Form } from 'react-bootstrap';
 import { auth } from "../../firebase";
 
 interface InterfaceProps {
@@ -59,25 +60,18 @@ export class SignInForm extends React.Component<
     const isInvalid = password === "" || email === "";
 
     return (
-      <form onSubmit={event => this.onSubmit(event)}>
-        <input
-          value={email}
-          onChange={event => this.setStateWithEvent(event, "email")}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          value={password}
-          onChange={event => this.setStateWithEvent(event, "password")}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-
+      <Form onSubmit={(event: any) => this.onSubmit(event)}>
+        <Form.Group controlId="formEmailAddress">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control value={email} onChange={(event: any) => this.setStateWithEvent(event, "email")} type="text" placeholder="Email Address" />
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control value={password} onChange={(event: any) => this.setStateWithEvent(event, "password")} type="password" placeholder="Password" />
+        </Form.Group>
+        <Button disabled={isInvalid} type="submit">Sign in</Button>
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 

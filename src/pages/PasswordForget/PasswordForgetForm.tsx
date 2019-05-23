@@ -1,5 +1,6 @@
 import * as React from "react";
 import { auth } from "../../firebase";
+import { Button, Form } from 'react-bootstrap';
 
 export class PasswordForgetForm extends React.Component {
   private static INITIAL_STATE = {
@@ -37,19 +38,17 @@ export class PasswordForgetForm extends React.Component {
     const isInvalid = email === "";
 
     return (
-      <form onSubmit={(event) => this.onSubmit(event)}>
-        <input
-          value={email}
-          onChange={(event) => this.setStateWithEvent(event, "email")}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+      <Form onSubmit={(event:any) => this.onSubmit(event)}>
+        <Form.Group controlId="formForgotEmail">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control value={email} onChange={(event: any) => this.setStateWithEvent(event, "email")} type="text" placeholder="Email Address" />
+        </Form.Group>
+        <Button disabled={isInvalid} type="submit">
+          Forgot Password
+        </Button>
 
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 
