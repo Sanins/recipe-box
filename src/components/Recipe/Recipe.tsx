@@ -4,6 +4,7 @@ import { AddRecipe } from '../AddRecipe/AddRecipe';
 import { EditRecipe } from '../EditRecipe/EditRecipe';
 import { Container, Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 import { recipe } from './../../../types/types'
+import firebase from 'firebase';
 
 interface RecipeState {
 	recipes: recipe[];
@@ -35,28 +36,33 @@ export class Recipe extends React.Component<any, RecipeState> {
   }
 
   componentDidMount() {
-    var recipes = (typeof localStorage["recipes"] !== "undefined") ? JSON.parse(localStorage.getItem('recipes') || '{}') : [
-      {
-        name: "Banana Smoothie", 
-        difficulty: "Easy",
-        ingredients: ["2 bananas", "1/2 cup vanilla yogurt", "1/2 cup skim milk", "2 teaspoons honey", "pinch of cinnamon"],
-        instructions: ["put in oven", "do a star jump", "dab"]
-      },
-      {
-        name: "Spaghetti",
-        difficulty: "Easy",
-        ingredients: ["Noodles", "Tomato Sauce", "Meatballs"],
-        instructions: ["put in oven", "do a star jump", "dab"]
-      },
-      {
-        name: "Split Pea Soup", 
-        difficulty: "Medium",
-        ingredients: ["1 pound split peas", "1 onion", "6 carrots", "4 ounces of ham"],
-        instructions: ["put in oven", "do a star jump", "dab"]
+    const recipesRef = firebase.database().ref('recipes');
+    recipesRef.on('value', (snapshot) => {
+      let recipes = snapshot.val();
+      let newState = [{
+        difficulty: '',
+        name: '',
+        ingredients: [''],
+        instructions: [''],
+      }];
+      for (let recipe in recipes) {
+        newState.push({
+          difficulty: recipes[recipe].difficulty,
+          name: recipes[recipe].name,
+          ingredients: recipes[recipe].ingredients,
+          instructions: recipes[recipe].instructions
+        });
       }
-    ];
-    this.setState({recipes: recipes});
+      this.setState({
+        recipes: newState
+      });
+    });
   }
+
+  // componentDidMount() {
+  //   var recipes = (typeof localStorage["recipes"] !== "undefined") ? JSON.parse(localStorage.getItem('recipes') || '{}'):[];
+  //   this.setState({recipes: recipes});
+  // }
 
   showAddModal() {
     this.setState({ showAdd: !this.state.showAdd });
@@ -69,7 +75,7 @@ export class Recipe extends React.Component<any, RecipeState> {
   addRecipe(recipe: {name: string; difficulty:string; ingredients: string[]; instructions:string[]}) {
     let recipes = this.state.recipes;
     recipes.push(recipe);
-    localStorage.setItem('recipes', JSON.stringify(recipes));
+    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes});
     this.showAddModal();
   }
@@ -77,7 +83,7 @@ export class Recipe extends React.Component<any, RecipeState> {
   editRecipe(newName: string, newDifficulty:string, newIngredients: string[], newInstructions: string[], currentlyEditing: number) {
     let recipes = this.state.recipes;
     recipes[currentlyEditing] = {name: newName, difficulty: newDifficulty, ingredients: newIngredients, instructions: newInstructions};
-    localStorage.setItem('recipes', JSON.stringify(recipes));
+    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes});
     this.showEditModal(currentlyEditing);
   }
@@ -85,7 +91,7 @@ export class Recipe extends React.Component<any, RecipeState> {
   deleteRecipe(index:any) {
     let recipes = this.state.recipes;
     recipes.splice(index, 1);
-    localStorage.setItem('recipes', JSON.stringify(recipes));
+    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes, currentlyEditing: 0});
   }
 
@@ -117,17 +123,13 @@ export class Recipe extends React.Component<any, RecipeState> {
                         <Col xs={6} md={4}>
                           <h2 className='recipe__subheading'>Ingredients</h2>
                           <ul className="recipe__list">
-                            {recipe.ingredients.map((ingredient, index) => (
-                              <li className="recipe__list__ingredients" key={index}>{ingredient}</li>
-                            ))}
+                            <li className="recipe__list__ingredients" key={index}>{recipe.ingredients}</li>
                           </ul>
                         </Col>
                         <Col xs={12} md={8}>
                           <h2 className='recipe__subheading'>Instructions</h2>
                           <ul className="recipe__list">
-                            {recipe.instructions.map((instruction, index) => (
-                              <li className="recipe__numeric-list" key={index}>{index +1}. {instruction}</li>
-                            ))}
+                            <li className="recipe__numeric-list" key={index}>{index +1}. {recipe.instructions}</li>
                           </ul>
                         </Col>
                       </Row>
