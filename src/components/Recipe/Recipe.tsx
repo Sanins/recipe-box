@@ -59,11 +59,6 @@ export class Recipe extends React.Component<any, RecipeState> {
     });
   }
 
-  // componentDidMount() {
-  //   var recipes = (typeof localStorage["recipes"] !== "undefined") ? JSON.parse(localStorage.getItem('recipes') || '{}'):[];
-  //   this.setState({recipes: recipes});
-  // }
-
   showAddModal() {
     this.setState({ showAdd: !this.state.showAdd });
   }
@@ -75,7 +70,6 @@ export class Recipe extends React.Component<any, RecipeState> {
   addRecipe(recipe: {name: string; difficulty:string; ingredients: string[]; instructions:string[]}) {
     let recipes = this.state.recipes;
     recipes.push(recipe);
-    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes});
     this.showAddModal();
   }
@@ -83,7 +77,6 @@ export class Recipe extends React.Component<any, RecipeState> {
   editRecipe(newName: string, newDifficulty:string, newIngredients: string[], newInstructions: string[], currentlyEditing: number) {
     let recipes = this.state.recipes;
     recipes[currentlyEditing] = {name: newName, difficulty: newDifficulty, ingredients: newIngredients, instructions: newInstructions};
-    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes});
     this.showEditModal(currentlyEditing);
   }
@@ -91,7 +84,6 @@ export class Recipe extends React.Component<any, RecipeState> {
   deleteRecipe(index:any) {
     let recipes = this.state.recipes;
     recipes.splice(index, 1);
-    // localStorage.setItem('recipes', JSON.stringify(recipes));
     this.setState({recipes: recipes, currentlyEditing: 0});
   }
 
